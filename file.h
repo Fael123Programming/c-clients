@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define RECORD_PATH "C:\\Users\\Rafae\\OneDrive\\Documentos\\dev\\c\\clients\\record.txt"
+#define RECORD_PATH "C:\\Users\\Rafae\\OneDrive\\Documentos\\dev\\c\\clients\\record.csv"
 
 // Creates the file to register all customers if not existent.
 void createRecord() {

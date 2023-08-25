@@ -4,8 +4,8 @@
 #define PHONE_NUMBER_SIZE 20
 
 struct client {
-    char name[NAME_SIZE];
-    char phoneNumber[PHONE_NUMBER_SIZE];
+    char name[NAME_SIZE + 1];
+    char phoneNumber[PHONE_NUMBER_SIZE + 1];
 };
 
 // Reads the attributes of a client.
