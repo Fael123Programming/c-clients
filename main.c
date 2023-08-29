@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 #include "client.h"
 #include "file.h"
 
@@ -9,16 +8,13 @@
 void loop();
 
 // Register new clients.
-void register_client();
+void registerClient();
 
 // Prints out an error msg.
 void error(const char*);
 
 int main() {
-    // loop();
-    char str[5] = " a  ";
-    strip(str, 5);
-    printf("'%s'\n", str);
+    loop();
 
     return 0;
 }
@@ -27,7 +23,7 @@ void loop() {
     createRecord();
     char option;
     char exit;
-    while (true) {
+    while (1) {
         printf("-------------------- Clients ---------------------\n");
         printf("(1) - Register\n");
         printf("(2) - Search\n");
@@ -38,7 +34,7 @@ void loop() {
         fflush(stdin);
         clearTerminal();
         if (option == '1')
-            register_client();
+            registerClient();
         else if (option == '2')
             printf("\n- Search Client -\n");
         else if (option == '3') {
@@ -51,53 +47,78 @@ void loop() {
             if (exit == 'y' || exit == 'Y')
                 return;
         } else
-            printf("\n- Unknown option -\n");
+            error("\n- Unknown option -\n");
         clearTerminal();
     }
 }
 
-void register_client() {
-    struct client c;
-    clearString(c.name, NAME_SIZE);
-    clearString(c.phoneNumber, PHONE_NUMBER_SIZE);
+void registerClient() {
+    char* name = NULL;
+    int nameLen;
+    size_t len = 0;
     while (1) {
         printf("\n- Register New Client -\n");
-        printf("Name [up to %d chars] ('-1' to get back): ", NAME_SIZE);
-        fgets(c.name, NAME_SIZE + 1, stdin);
-        fflush(stdin);
-        if (is_blank(c.name, NAME_SIZE))
+        printf("%s", drawRow(50, '-'));
+        printf("Name [up to %d chars] ('-1' to decline): ", NAME_SIZE);
+        getline(&name, &len, stdin);
+        strip(name, strlen(name));
+        nameLen = strlen(name);
+        if (isBlank(name, nameLen))
             error("\n- Name cannot be empty -\n");
         else {
-            strip(c.name, NAME_SIZE);
-            printf("%s\n%d\n", c.name, strlen(c.name));
-            if (strlen(c.name) <= NAME_SIZE)
+            if (nameLen <= NAME_SIZE)
                 break;
             else
                 error("\n- Name too long -\n");
         }
     }
-    if (!strcmp(c.name, "-1"))
+    if (!strcmp(name, "-1"))
         return;
+    char* phoneNumber = NULL;
+    int phoneLen;
     while (1) {
-        printf("Phone number [up to %d chars] ('-1' to get back): ", PHONE_NUMBER_SIZE);
-        fgets(c.phoneNumber, PHONE_NUMBER_SIZE + 1, stdin);
-        fflush(stdin);
-        if (is_blank(c.phoneNumber, PHONE_NUMBER_SIZE))
+        printf("Phone number [up to %d chars] ('-1' to decline): ", PHONE_NUMBER_SIZE);
+        getline(&phoneNumber, &len, stdin);
+        strip(phoneNumber, strlen(phoneNumber));
+        phoneLen = strlen(phoneNumber);
+        if (isBlank(phoneNumber, phoneLen))
             error("\n- Phone number cannot be empty -\n");
         else {
-            strip(c.phoneNumber, PHONE_NUMBER_SIZE);
-            if (strlen(c.phoneNumber) <= PHONE_NUMBER_SIZE)
+            if (phoneLen <= PHONE_NUMBER_SIZE)
                 break;
             else
                 error("\n- Phone number too long -\n");
         }
     }
-    if (!strcmp(c.phoneNumber, "-1"))
+    if (!strcmp(phoneNumber, "-1"))
         return;
-    clearTerminal();
-    printf("%s", draw_row(50, '-'));
-    printf("\n - New client registered -\n");
-    system("pause");
+    char opt;
+    while (1) {
+        clearTerminal();
+        printf("\n - New client -\n");
+        printf("%s", drawRow(50, '-'));
+        printf("Name: %s\n", name);
+        printf("Phone number: %s\n", phoneNumber);
+        printf("%s", drawRow(50, '-'));
+        printf("[1] Create          [2] Edit          [3] Cancel\n");
+        printf("%s", drawRow(50, '-'));
+        printf("-> ");
+        scanf("%c", &opt);
+        fflush(stdin);
+        clearTerminal();
+
+        if (opt == '1') {
+            printf("- Created Successfully -\n");
+            system("pause");
+            break;
+        } else if (opt == '2') {
+            printf("- Edit Client -\n");
+            system("pause");
+        } else if (opt == '3')
+            break;
+        else
+            error("\n- Unknown option -\n");
+    }
     clearTerminal();
 }
 

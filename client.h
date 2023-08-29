@@ -1,6 +1,6 @@
 #include "util.h"
 
-#define NAME_SIZE 50
+#define NAME_SIZE 100
 #define PHONE_NUMBER_SIZE 20
 
 struct client {
