@@ -34,13 +34,10 @@ void clearTerminal() {
 }
 
 // Draw a row of symbols 'symb' with size 'size' and an endline.
-char* drawRow(int size, char symb) {
-    char* row = malloc(size + 2);
+void drawRow(int size, char symb) {
     for (int i = 0; i < size; i++)
-        *(row + i) = symb;
-    *(row + size) = '\n';
-    *(row + size + 1) = '\0';
-    return row;
+        putchar(symb);
+    putchar('\n');
 }
 
 int isBlank(char* str) {

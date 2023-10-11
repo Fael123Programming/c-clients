@@ -15,23 +15,23 @@ void createRecordIfNotExist() {
     fclose(record);
 }
 
-char* serialize(char* name, char* phoneNumber) {
-    char* tuple = (char*) calloc(strlen(name) + strlen(phoneNumber) + 3, sizeof(char));
+char* serialize(char* name, char* phone_number) {
+    char* tuple = (char*) calloc(strlen(name) + strlen(phone_number) + 3, sizeof(char));
     strcpy(tuple, name);
     strcat(tuple, ",");
-    strcat(tuple, phoneNumber);
+    strcat(tuple, phone_number);
     strcat(tuple, "\n");
     return tuple;   
 }
 
-int customerExists(char* name, char* phoneNumber) {
+int customerExists(char* name, char* phone_number) {
     FILE* record;
     record = fopen(RECORD_PATH, "r");
     if (record == NULL) {
         printf("Can't open file at '%s'\n", RECORD_PATH);
 	exit(-1);
     }
-    char* ser = serialize(name, phoneNumber);
+    char* ser = serialize(name, phone_number);
     char* line = NULL;
     size_t s = 0;
     int resp = 0;
@@ -48,17 +48,14 @@ int customerExists(char* name, char* phoneNumber) {
     return resp;
 }
 
-int appendToRecord(char* name, char* phoneNumber) {
+int appendToRecord(char* name, char* phone_number) {
     createRecordIfNotExist();
-    if (customerExists(name, phoneNumber)) {
+    if (customerExists(name, phone_number)) {
         return 0;
     }
     FILE* record; 
     record = fopen(RECORD_PATH, "a");
-    if (fputs(serialize(name, phoneNumber), record) == EOF) {
-        printf("Error in fputs");
-	exit(-1);
-    }
+    sprintf(record, serialize(name, phone_number));
     fclose(record);
     return 1;
 }

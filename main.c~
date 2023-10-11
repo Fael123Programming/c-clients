@@ -88,7 +88,6 @@ void registerClient() {
 	    }
 	    free(name);
             free(phoneNumber);
-	    break;
         } else if (opt == '2') {
             char opt2;
             while (1) {
